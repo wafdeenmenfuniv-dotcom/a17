@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار تفاعلي: الدراما والمسرح اليوناني</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#17233c;--muted:#65718a;--primary:#4f46e5;--primary2:#3730a3;--line:#dfe5f0;--good:#147d52;--goodbg:#e8f8ef;--bad:#b42318;--badbg:#fff0ee;--soft:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#eef2ff 0%,#f7f9fc 48%,#e7f7f4 100%);color:var(--ink);line-height:1.8}
+.wrap{width:min(900px,94%);margin:32px auto}
+.hero{background:linear-gradient(135deg,#312e81,#4f46e5 58%,#0f766e);color:#fff;border-radius:24px;padding:28px 30px;margin-bottom:20px;box-shadow:0 14px 34px #252d5b22}
+.hero h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.2rem)}
+.hero p{margin:0;color:#e7eaff}
+.panel{background:var(--card);border:1px solid #e7ebf3;border-radius:20px;padding:24px;margin:18px 0;box-shadow:0 8px 25px #1c2a4a0b}
+h2{font-size:1.25rem;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:700;margin-bottom:5px}
+input[type=text]{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;font:inherit;background:#fbfcff}
+input:focus{outline:3px solid #c7d2fe;border-color:var(--primary)}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:12px 20px;font-weight:700;transition:.2s}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--primary);color:white}.primary:hover{background:var(--primary2)}
+.secondary{background:#e9edf7;color:#25324b}
+.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.95rem}
+.track{height:9px;background:#e9edf5;border-radius:99px;overflow:hidden;margin:12px 0 22px}
+.track div{height:100%;background:linear-gradient(90deg,#4f46e5,#0f766e);width:0;transition:width .25s}
+.question{font-size:1.18rem;font-weight:700;margin:0 0 16px}
+.options{display:grid;gap:10px}
+.option{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:13px;cursor:pointer;background:#fff;transition:.15s}
+.option:hover{border-color:#a5b4fc;background:#fafaff}
+.option input{margin-top:7px;accent-color:var(--primary);transform:scale(1.1)}
+.option.selected{border-color:var(--primary);background:var(--soft)}
+.feedback{margin-top:16px;padding:13px 15px;border-radius:12px;display:none}
+.feedback.good{display:block;background:var(--goodbg);color:var(--good);border:1px solid #b9e9ce}
+.feedback.bad{display:block;background:var(--badbg);color:var(--bad);border:1px solid #ffd0ca}
+.actions{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:20px}
+.hidden{display:none!important}
+.result{text-align:center}
+.score{font-size:2.5rem;font-weight:800;color:var(--primary);line-height:1.3}
+.resultbox{padding:18px;background:#f7f8ff;border-radius:16px;margin:16px 0}
+.small{font-size:.9rem;color:var(--muted)}
+.review-item{text-align:right;border-top:1px solid var(--line);padding:14px 0}
+.review-item strong{display:block}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;background:#e9edff;color:#3730a3;font-size:.85rem}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:16px}
+@media(max-width:600px){.wrap{margin:16px auto}.hero,.panel{padding:19px}.grid{grid-template-columns:1fr}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>اختبار تفاعلي في الدراما والمسرح اليوناني</h1>
+    <p>اختبر فهمك للمفاهيم الأساسية ونشأة الدراما وألوانها ورواد المسرح اليوناني، مع تغذية راجعة فورية.</p>
+  </header>
+
+  <section id="intro" class="panel">
+    <h2>بيانات الطالب</h2>
+    <p class="small">يرجى كتابة البيانات قبل بدء الاختبار. يتكون الاختبار من 15 سؤال اختيار من متعدد، ولكل سؤال درجة واحدة.</p>
+    <div class="grid">
+      <div><label for="studentName">اسم الطالب</label><input id="studentName" type="text" autocomplete="name" placeholder="اكتب الاسم بالكامل" required></div>
+      <div><label for="studentId">الرقم الأكاديمي</label><input id="studentId" type="text" inputmode="numeric" placeholder="اكتب الرقم الأكاديمي" required></div>
+    </div>
+    <div class="actions"><span class="small">الدرجة النهائية: 15 درجة</span><button id="startBtn" class="primary">ابدأ الاختبار ←</button></div>
+    <p id="introError" class="feedback bad" role="alert"></p>
+  </section>
+
+  <section id="quizPanel" class="panel hidden" aria-live="polite">
+    <div class="topline"><span id="studentLabel"></span><span id="countLabel"></span></div>
+    <div class="track"><div id="progress"></div></div>
+    <div id="questionText" class="question"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback" role="status"></div>
+    <div class="actions">
+      <button id="prevBtn" class="secondary">السؤال السابق</button>
+      <button id="checkBtn" class="primary">تحقق من الإجابة</button>
+      <button id="nextBtn" class="primary hidden">السؤال التالي ←</button>
+      <button id="finishBtn" class="primary hidden">إنهاء الاختبار وعرض النتيجة</button>
+    </div>
+  </section>
+
+  <section id="resultPanel" class="panel result hidden">
+    <span class="pill">اكتمل الاختبار</span>
+    <h2>نتيجة الطالب</h2>
+    <div id="resultName"></div>
+    <div id="resultId" class="small"></div>
+    <div class="resultbox"><div id="score" class="score"></div><div id="percent"></div><p id="resultMessage"></p></div>
+    <button id="reviewBtn" class="secondary">مراجعة الإجابات والتغذية الراجعة</button>
+    <button id="retryBtn" class="primary">إعادة الاختبار</button>
+    <div id="review" class="hidden"></div>
+    <p class="small">ملاحظة: تُعرض النتيجة داخل الصفحة فقط، ولا تُرسل تلقائيًا إلى قاعدة بيانات أو بريد إلكتروني.</p>
+  </section>
+  <footer>اختبار تعليمي تفاعلي — الدراما وألوانها وتاريخ المسرح اليوناني</footer>
+</div>
+<script>
+const questions = [
+ {q:"ما الوسيلة الأساسية التي تُعبّر بها الشخصيات عن أفكارها ومشاعرها ورغباتها في الدراما؟",o:["السرد التاريخي فقط","الحوار المتبادل بين الشخصيات","الوصف الجغرافي","اللوحات الصامتة"],a:1,why:"الحوار المتبادل هو وسيلة التعبير التي تتيح للكاتب بناء الشخصيات والأحداث والعلاقات الدرامية."},
+ {q:"على أي عنصر تقوم العلاقة الدرامية وفق المادة؟",o:["الصراع","الزخرفة","الملابس وحدها","الموسيقى فقط"],a:0,why:"العلاقة الدرامية تقوم على الصراع، وقد يكون بين الشخصيات أو بينها وبين القوى المحيطة بها."},
+ {q:"ما الفكرة التي أكدها أرسطو بشأن المحاكاة؟",o:["المحاكاة مهارة مكتسبة في الشيخوخة فقط","المحاكاة غريزة لدى الإنسان منذ طفولته ويتلقى بها معارفه الأولى","المحاكاة تقتصر على الرسم","المحاكاة لا ترتبط بالأعمال الإنسانية"],a:1,why:"بحسب النص، رأى أرسطو أن المحاكاة غريزة إنسانية منذ الطفولة، وأن أعمال الناس موضوعات لها."},
+ {q:"ارتبطت نشأة الدراما الإغريقية في المادة باحتفالات الإله:",o:["أبولو","زيوس","ديونيسيوس","هرمس"],a:2,why:"ترتبط نشأة التراجيديا والكوميديا في النص بأعياد ديونيسيوس."},
+ {q:"ما الأصل الذي يُنسب إليه ظهور التراجيديا وفق الرواية الواردة في المادة؟",o:["الديثرامب، وهو رقص وغناء تؤديه الجوقة","المحاضرات الفلسفية","التمثيل الصامت الحديث","القصص البوليسية"],a:0,why:"تربط المادة أصل التراجيديا بالديثرامب، وهو نوع من الرقصات الغنائية التي تؤديها الجوقة بمصاحبة الناي."},
+ {q:"من الذي يُشار إليه في المادة بوصفه أبا التراجيديا؟",o:["ميناندر","ثيسبيس","أرسطوفانيس","يوربيدس"],a:1,why:"تذكر المادة ثيسبيس بوصفه أبا التراجيديا وأول من كتب فيها في القرن السادس قبل الميلاد."},
+ {q:"ما الموضوع الذي ارتبطت به مصادر التراجيديا الإغريقية المبكرة؟",o:["الأساطير حول الشخصيات القديمة والآلهة","الحياة الرقمية","المغامرات الفضائية","التقارير الاقتصادية"],a:0,why:"توضح المادة أن الأساطير المرتبطة بالشخصيات القديمة والآلهة كانت مصدرًا للتراجيديا."},
+ {q:"أي عبارة تصف إحدى النظريتين المذكورتين حول بدايات الدراما؟",o:["نشأت من الطقوس المرتبطة بانتصار الحياة على الموت","نشأت حصريًا من الصحافة الحديثة","بدأت مع السينما","ظهرت بعد اختراع الطباعة"],a:0,why:"تذكر المادة نظرية تربط البداية بطقوس الاحتفال بانتصار قوة الحياة على الموت، وأخرى بتكريم الموتى."},
+ {q:"ما الدور الذي أدته الجوقة في المسرح اليوناني كما ورد في النص؟",o:["إدارة الإضاءة الكهربائية","إرشاد الجمهور والتعليق على الأحداث، وأحيانًا المشاركة في تطورها","بيع التذاكر","كتابة النقد بعد العرض فقط"],a:1,why:"كانت الجوقة ترشد الجمهور وتعلّق على ما يحدث، وقد تشارك أحيانًا في تطور المسرحية."},
+ {q:"ما العنصر الذي عدّه أرسطو أهم عناصر التراجيديا؟",o:["الديكور","الحبكة","عدد المقاعد","الملابس"],a:1,why:"تؤكد المادة أن أرسطو عدّ الحبكة أهم عناصر التراجيديا، وأن الشخصية مهمة بوصفها عنصرًا في إعدادها."},
+ {q:"ما الإضافة المسرحية التي تنسبها المادة إلى اسخيلوس؟",o:["إلغاء الحوار نهائيًا","إضافة ممثل ثانٍ وتطوير الحوار الدرامي","إلغاء الجوقة في كل المسرحيات","ابتكار الكوميديا الحديثة"],a:1,why:"تذكر المادة أن اسخيلوس استخدم الممثل الثاني، مما وضع أساسًا للحوار كما نعرفه."},
+ {q:"بماذا تميز سوفوكليس في البناء المسرحي بحسب المادة؟",o:["إضافة ممثل ثالث والاهتمام بالحبكة والشخصيات","الاقتصار على الإنشاد دون تمثيل","إلغاء الشخصيات الفردية","جعل كل المسرحيات كوميدية"],a:0,why:"تنسب المادة إلى سوفوكليس إضافة ممثل ثالث، وتحسين المناظر، والعناية بالحبكة وبواعث الشخصيات."},
+ {q:"ما السمة التي تميز بها يوربيدس وفق النص؟",o:["الابتعاد التام عن الإنسان","التصوير الأقرب إلى الواقع والنزعة العقلية","رفض الحوار","الاقتصار على المسرحيات الهزلية"],a:1,why:"تصف المادة يوربيدس بأنه اتجه إلى تصوير أقرب للواقع، واهتم بالإنسان وبالتفكير العقلي."},
+ {q:"أي وصف يناسب الكوميديا وفق المادة؟",o:["نوع لا يتضمن أي عنصر مضحك","شكل درامي غالبًا ما يتسم بالمرح وقد ينتهي نهاية سعيدة ويعالج قضايا الناس","دراما موسيقية بالضرورة","نوع يركز حصريًا على الخوف والشفقة"],a:1,why:"تصف المادة الكوميديا بأنها شكل مرح يتضمن أحداثًا وشخصيات مضحكة، وقد يعالج مشكلات اجتماعية وينتهي نهاية سعيدة."},
+ {q:"ما السمة الأخلاقية البارزة للميلودراما كما وردت في المادة؟",o:["لا تميز بين الخير والشر مطلقًا","الفضيلة تكافأ والرذيلة تعاقب غالبًا","تخلو من الأحداث","تعتمد على الجوقة وحدها"],a:1,why:"تذكر المادة أن من أبرز معالم الميلودراما مراعاة العدالة الأخلاقية؛ فالفضيلة تكافأ والرذيلة تعاقب."}
+];
+let current=0, answers=Array(questions.length).fill(null), checked=Array(questions.length).fill(false);
+const $=id=>document.getElementById(id);
+$("startBtn").addEventListener("click",()=>{
+ const name=$("studentName").value.trim(), sid=$("studentId").value.trim();
+ if(!name||!sid){$("introError").textContent="من فضلك اكتب اسم الطالب والرقم الأكاديمي قبل بدء الاختبار.";$("introError").className="feedback bad";return}
+ $("introError").className="feedback"; $("intro").classList.add("hidden");$("quizPanel").classList.remove("hidden");
+ $("studentLabel").textContent="الطالب: "+name;renderQuestion();
+});
+function renderQuestion(){
+ const q=questions[current]; $("countLabel").textContent=`السؤال ${current+1} من ${questions.length}`;
+ $("progress").style.width=((current+1)/questions.length*100)+"%";
+ $("questionText").textContent=q.q; $("options").innerHTML="";
+ q.o.forEach((opt,i)=>{
+  const label=document.createElement("label");label.className="option"+(answers[current]===i?" selected":"");
+  const radio=document.createElement("input");radio.type="radio";radio.name="answer";radio.value=i;radio.checked=answers[current]===i;radio.disabled=checked[current];
+  radio.addEventListener("change",()=>{answers[current]=i;document.querySelectorAll(".option").forEach((el,j)=>el.classList.toggle("selected",j===i));});
+  const span=document.createElement("span");span.textContent=opt;label.append(radio,span);$("options").append(label);
+ });
+ const fb=$("feedback");fb.className="feedback";fb.textContent="";
+ $("checkBtn").classList.toggle("hidden",checked[current]);$("nextBtn").classList.add("hidden");$("finishBtn").classList.add("hidden");
+ if(checked[current]){
+  showFeedback();
+  if(current===questions.length-1)$("finishBtn").classList.remove("hidden");else $("nextBtn").classList.remove("hidden");
+ }
+ $("prevBtn").disabled=current===0;
+}
+function showFeedback(){
+ const q=questions[current],fb=$("feedback");fb.className="feedback "+(answers[current]===q.a?"good":"bad");
+ fb.textContent=(answers[current]===q.a?"إجابة صحيحة! أحسنت. ":"إجابة غير صحيحة. الإجابة الصحيحة هي: "+q.o[q.a]+". ")+q.why;
+}
+$("checkBtn").addEventListener("click",()=>{
+ if(answers[current]===null){const fb=$("feedback");fb.className="feedback bad";fb.textContent="اختر إجابة أولًا، ثم اضغط «تحقق من الإجابة».";return}
+ checked[current]=true;renderQuestion();
+});
+$("prevBtn").addEventListener("click",()=>{if(current>0){current--;renderQuestion()}});
+$("nextBtn").addEventListener("click",()=>{if(current<questions.length-1){current++;renderQuestion()}});
+$("finishBtn").addEventListener("click",showResult);
+function showResult(){
+ const score=questions.reduce((sum,q,i)=>sum+(answers[i]===q.a?1:0),0),pct=Math.round(score/questions.length*100);
+ $("quizPanel").classList.add("hidden");$("resultPanel").classList.remove("hidden");
+ $("resultName").textContent="اسم الطالب: "+$("studentName").value.trim();
+ $("resultId").textContent="الرقم الأكاديمي: "+$("studentId").value.trim();
+ $("score").textContent=score+" / "+questions.length;$("percent").textContent="النسبة المئوية: "+pct+"%";
+ $("resultMessage").textContent=pct>=90?"ممتاز! لديك فهم قوي للمحتوى.":pct>=75?"جيد جدًا! راجع النقاط التي أخطأت فيها لتعزيز فهمك.":pct>=60?"أداء مقبول، ويُنصح بمراجعة المفاهيم الأساسية ثم إعادة الاختبار.":"تحتاج إلى مراجعة المادة بعناية، خاصة التغذية الراجعة لكل سؤال، ثم إعادة المحاولة.";
+ $("review").innerHTML="";questions.forEach((q,i)=>{
+  const item=document.createElement("div");item.className="review-item";
+  const title=document.createElement("strong");title.textContent=`${i+1}. ${q.q}`;
+  const answer=document.createElement("div");answer.textContent="إجابتك: "+(answers[i]===null?"لم تتم الإجابة":q.o[answers[i]]);
+  const correct=document.createElement("div");correct.textContent="الإجابة الصحيحة: "+q.o[q.a];correct.style.color="var(--good)";
+  const why=document.createElement("div");why.textContent="التغذية الراجعة: "+q.why;why.className="small";
+  item.append(title,answer,correct,why);$("review").append(item);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+$("reviewBtn").addEventListener("click",()=>{$("review").classList.toggle("hidden");$("reviewBtn").textContent=$("review").classList.contains("hidden")?"مراجعة الإجابات والتغذية الراجعة":"إخفاء المراجعة"});
+$("retryBtn").addEventListener("click",()=>{current=0;answers=Array(questions.length).fill(null);checked=Array(questions.length).fill(false);$("resultPanel").classList.add("hidden");$("intro").classList.remove("hidden");$("review").classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"})});
+</script>
+</body>
+</html>
